@@ -203,6 +203,51 @@
       radial-gradient(1.5px 1.5px at 85% 15%, #fff, transparent);
     background-repeat:repeat; background-size:200px 200px;
   }
+  .v-dorama{background:linear-gradient(135deg, #4a2570, #1a1030);}
+  .v-musica{background:linear-gradient(135deg, var(--rose), var(--blue-royal));}
+  .v-doce{background:linear-gradient(135deg, #fff7ec, #f2e2c8); }
+  .v-doce span{filter:drop-shadow(0 4px 10px rgba(120,90,40,0.25));}
+
+  /* ---- creative "us" photo section ---- */
+  .photo-us{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1.2rem;
+    margin-top:1rem;
+  }
+  .polaroid{
+    background:#fff;
+    padding:0.8rem 0.8rem 2.6rem 0.8rem;
+    border-radius:6px;
+    box-shadow:0 18px 40px -18px rgba(0,0,0,0.5);
+    transform:rotate(-3deg);
+    width:min(280px, 72vw);
+    position:relative;
+  }
+  .polaroid.alt{transform:rotate(3deg);}
+  .polaroid .frame{
+    aspect-ratio:1/1;
+    border-radius:2px;
+    overflow:hidden;
+    background:linear-gradient(135deg, var(--blue-sky), var(--navy));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:2rem;
+  }
+  .polaroid .frame img{width:100%; height:100%; object-fit:cover; display:block;}
+  .polaroid .cap{
+    font-family:'Baloo 2',cursive;
+    text-align:center;
+    margin-top:0.7rem;
+    color:var(--ink);
+    font-size:0.9rem;
+  }
+  .tape{
+    position:absolute; top:-9px; left:50%; transform:translateX(-50%) rotate(-4deg);
+    width:60px; height:20px;
+    background:rgba(255,214,107,0.6);
+    box-shadow:0 2px 4px rgba(0,0,0,0.15);
+  }
 
   .fandom-text .label{margin-bottom:0.5rem; display:inline-block;}
   .fandom-text h2{font-size:1.35rem; margin-bottom:0.7rem;}
@@ -342,6 +387,10 @@
 
     #sky .quote-box{padding:2.4rem 2rem;}
 
+    .photo-us{flex-direction:row; justify-content:center; align-items:flex-end; gap:0; margin-top:1.5rem;}
+    .polaroid{width:260px; margin:0 -1.2rem;}
+    .polaroid.alt{margin-bottom:1.5rem;}
+
     .timeline{
       flex-direction:row; justify-content:space-between;
       border-left:none; margin-left:0; padding-left:0;
@@ -378,7 +427,7 @@
   <div style="position:relative; z-index:2;">
     <div class="eyebrow label">oi, meu amor</div>
     <h1>Será que você<br>me perdoa?</h1>
-    <p>Po, hoje eu falei besteira. Saiu tudo errado e pareceu que eu tava te chamando de mentirosa — e definitivamente não é isso que eu penso de você. Você é a última pessoa nesse mundo que eu duvidaria, E eu te juro isso.</p>
+     <p>Po, hoje eu falei besteira. Saiu tudo errado e pareceu que eu tava te chamando de mentirosa — e definitivamente não é isso que eu penso de você. Você é a última pessoa nesse mundo que eu duvidaria, E eu te juro isso.</p>
     <div class="choices">
       <button class="btn btn-yes" onclick="sayYes()">Sim, eu te perdoo</button>
       <button class="btn btn-no" id="noBtn">Preciso pensar</button>
@@ -391,7 +440,7 @@
 <section id="thanks">
   <div class="icon">💙</div>
   <h2>Obrigado por me dar essa chance</h2>
-  <p>Que bom que você continuou aqui. Montei essa página com tudo que você gosta meu amor, só pra te mostrar o quanto você importa pra mim — e o quanto eu me sinto mal por ter te feito passar por isso hoje.</p>
+  <p>Que bom que você continuou aqui. Montei essa página com tudo que você curte, só pra te mostrar o quanto você importa pra mim — e o quanto eu me sinto mal por ter te feito passar por isso hoje.</p>
 </section>
 
 <!-- CLARIFYING -->
@@ -409,7 +458,6 @@
     <tr><th>O que saiu (do jeito errado)</th><th>O que eu realmente quis dizer</th></tr>
     <tr><td class="wrong">"Parecia que você tava mentindo"</td><td class="right">"Eu fiquei confuso com a situação e me expressei muito mal."</td></tr>
     <tr><td class="wrong">Tom de desconfiança</td><td class="right">"Eu confio em você — você é meu porto seguro."</td></tr>
-    <tr><td class="wrong">Voz alterada</td><td class="right">"Eu reagi mal porque tenho medo de te magoar ou te perder, não porque duvido de você."</td></tr>
   </table>
 </section>
 
@@ -435,8 +483,8 @@
     <div class="fandom-text">
       <span class="label">a lealdade do snoopy</span>
       <h2>"A vida é melhor com um amigo do lado"</h2>
-      <p>O Snoopy não liga pras trapalhadas do Charlie Brown, ele continua ali do lado dele. É isso que eu quero ser pra você: alguém que apoia, que faz rir, que não larga sua mão nem quando erra feio.</p>
-      <p>Amar é dividir sofá, pipoca e a vida inteira — e hoje eu fui um Charlie Brown emburrado. Desculpa.</p>
+      <p>Simplesmente o personagem q me lembra vc, só de falar nele ja vem vc na minha cabeça, e eu com certeza sou o periquito amarelo q fica em volta dele e vc o snoopy.</p>
+      <p>sem falar q ele é nosso filho. O Snoopys</p>
     </div>
   </div>
 </section>
@@ -449,8 +497,8 @@
     <div class="fandom-text">
       <span class="label">estilo rick &amp; michonne</span>
       <h2>Meu porto seguro</h2>
-      <p>Em qualquer apocalipse, confusão ou zona que a vida vire, é você que eu quero no meu grupo. Você não é estranha pra mim, é família.</p>
-      <p>As pessoas que a gente ama são o que nos fazem quem a gente é. Você me faz melhor todos os dias, e eu enfrento mil walkers se for preciso, só pra te ver bem de novo.</p>
+      <p>Se um dia o mundo virasse um apocalipse igual em The Walking Dead, eu não ia ligar pro caos lá fora. A única coisa que eu ia querer era ter você do meu lado. Porque, no fim das contas, são as pessoas que a gente ama que fazem tudo valer a pena.</p>
+      <p>E, se pra te ver bem eu tivesse que enfrentar uma horda inteira de walkers, eu ia. Sem pensar duas vezes. 🤍</p>
     </div>
   </div>
 </section>
@@ -461,10 +509,52 @@
     <!-- troque o <span> abaixo por <img src="sua-foto.jpg" alt="a gente ouvindo música"> quando tiver a foto -->
     <div class="fandom-visual v-peep"><img src="images/lilpeep.jpg" alt=""></div>
     <div class="fandom-text">
-      <span class="label">pensando em você</span>
+      <span class="label">Seu cantor favorito</span>
       <h2>Lil Peep</h2>
-     <p>Sabe a do Lil Peep que fala do céu cheio de estrela, que cada uma tem um motivo pra brilhar? Ela fica passando na minha cabeça toda hora que eu penso na gente.</p>
-      <p>"Look at the sky tonight, all of the stars have a reason..." E o meu maior motivo pra tudo é você.</p>
+      <p>Sabe a do Lil Peep que fala do céu cheio de estrela, que cada uma tem um motivo pra brilhar? Ela fica passando na minha cabeça toda hora que eu penso na gente.</p>
+      <p>Porque, sem enrolação: o meu maior motivo pra tudo — pra levantar de manhã, pra tentar ser alguém melhor — é você.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DORAMA -->
+<section id="dorama">
+  <div class="fandom">
+    <!-- troque o <span> abaixo por <img src="cena-favorita.jpg" alt="cena do dorama favorito dela"> quando tiver a foto -->
+    <div class="fandom-visual v-dorama"><img src="images/desgraca.jpg" alt=""></div>
+    <div class="fandom-text">
+      <span class="label">Seu dorama favorito</span>
+      <h2>Desgraça ao Seu Dispor</h2>
+      <p>Tô com muita vontade de assistir esse dorama com você. Tenho certeza que você vai se emocionar até nas cenas mais bobinhas kkkkk, e eu já consigo imaginar você comentando tudo enquanto a gente assiste. Acho que esse vai ser um dos momentos que eu mais vou gostar de viver com você.</p>
+      <p>Bora ver hoje à noite? E prometo que dessa vez não vou falar besteira igual ontem. 🤍</p>
+    </div>
+  </div>
+</section>
+
+<!-- MUSICA -->
+<section id="musica" style="background:var(--blue-pale);">
+  <div class="fandom">
+    <!-- troque o <span> abaixo por <img src="momento-musica.jpg" alt="a gente ouvindo nossa música"> quando tiver a foto -->
+    <div class="fandom-visual v-musica"><img src="images/fica.jpg" alt=""></div>
+    <div class="fandom-text">
+      <span class="label">nossa música</span>
+      <h2>Fica</h2>
+      <p>Literalmente a musica que adotamos como nossa. Toda vez que ela tocar, eu quero lembrar de você e de tudo que a gente ainda vai viver junto.</p>
+      <p>Eu te amo e quero ficar para sempre meu amor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DOCE -->
+<section id="doce">
+  <div class="fandom">
+    <!-- troque o <span> abaixo por <img src="ouro-branco.jpg" alt="ouro branco"> quando tiver a foto -->
+    <div class="fandom-visual v-doce"><img src="images/ouro.jpg" alt=""></div>
+    <div class="fandom-text">
+      <span class="label">seu doce favorito</span>
+      <h2>Ouro Branco</h2>
+      <p>Confesso que já pensei em aparecer aí com uma caixa inteira de Ouro Branco só pra te fazer sorrir de novo kkkkk. Ainda tá de pé, é só me falar.</p>
+      <p>Você merecia um docinho desses toda vez que o dia pesasse — e principalmente hoje. 🤍</p>
     </div>
   </div>
 </section>
@@ -479,6 +569,30 @@
       <div class="label">olha o céu hoje à noite</div>
       <p>Quando as coisas desandam e eu me sinto quebrado, é a sua voz e o seu jeito de amar que me trazem de volta pro chão. Você é muito mais que perfeita pra mim, mesmo nos dias em que eu não mereço.</p>
     </div>
+  </div>
+</section>
+
+<!-- NOSSA FOTO -->
+<section id="usphoto" class="night">
+  <div class="stars"></div>
+  <div style="position:relative; z-index:2;" class="center">
+    <div class="label" style="color:var(--gold);">nós dois</div>
+    <h2 style="margin:0.6rem 0 1.5rem;">Sem filtro, sem edição</h2>
+    <div class="photo-us">
+      <div class="polaroid">
+        <div class="tape"></div>
+        <!-- troque o conteúdo do .frame abaixo por <img src="foto1.jpg" alt="a gente"> quando tiver a foto -->
+        <div class="frame"><img src="images/foto1.jpg" alt=""></div>
+        
+      </div>
+      <div class="polaroid alt">
+        <div class="tape"></div>
+        <!-- troque o conteúdo do .frame abaixo por <img src="foto2.jpg" alt="a gente"> quando tiver a foto -->
+        <div class="frame"><img src="images/foto2.jpg" alt=""></div>
+        
+      </div>
+    </div>
+    <p style="max-width:480px; margin:1.5rem auto 0; opacity:0.8;">Não preciso de dorama, super-herói ou música nenhuma pra provar o que eu sinto. Só preciso de você, do jeito real — igual nessas fotos.</p>
   </div>
 </section>
 
@@ -524,7 +638,7 @@
   <p class="fine" style="margin-top:2rem;">feito com carinho (e um pouco de arrependimento) só pra você</p>
 </section>
 
-<footer>este site é só nosso 💙 feito por Julio.</footer>
+<footer>este site é só nosso 💙 feito por Julio para livia.</footer>
 
 <script>
   // moon travels down a gentle arc as the user scrolls the whole page
