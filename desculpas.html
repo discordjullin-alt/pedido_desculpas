@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desculpa, meu amor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0a1440;
+    --navy:#101d5c;
+    --blue-royal:#2952d9;
+    --blue-sky:#6fa8f5;
+    --blue-pale:#eaf2ff;
+    --blue-mist:#f5f9ff;
+    --ink:#132048;
+    --paper:#ffffff;
+    --gold:#ffd66b;
+    --rose:#ff8fa3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Nunito', sans-serif;
+    color:var(--ink);
+    background:var(--blue-mist);
+    overflow-x:hidden;
+    position:relative;
+  }
+  h1,h2,h3,.display{
+    font-family:'Baloo 2', cursive;
+    color:var(--navy);
+  }
+  .label{
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    font-size:0.68rem;
+    color:var(--blue-royal);
+    font-weight:600;
+  }
+
+  /* ---- moon that travels the whole page ---- */
+  #moon-track{
+    position:fixed;
+    top:0; left:0;
+    width:100%;
+    height:100vh;
+    pointer-events:none;
+    z-index:5;
+  }
+  #moon{
+    position:absolute;
+    width:44px; height:44px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #fff9e8, var(--gold) 70%, #e8b74d 100%);
+    box-shadow:0 0 28px 6px rgba(255,214,107,0.5);
+    transition:opacity .4s ease;
+  }
+
+  /* ---- starfield backdrop for night sections ---- */
+  .night{
+    position:relative;
+    background:linear-gradient(180deg, var(--navy-deep), var(--navy) 60%, var(--navy-deep));
+    color:#dce6ff;
+    overflow:hidden;
+  }
+  .night h1, .night h2, .night h3{color:#f2f6ff;}
+  .stars{
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 10% 20%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 80% 10%, #fff, transparent),
+      radial-gradient(1px 1px at 30% 70%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 60% 40%, #fff, transparent),
+      radial-gradient(1px 1px at 90% 80%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 45% 90%, #fff, transparent),
+      radial-gradient(1px 1px at 15% 55%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 70% 65%, #fff, transparent);
+    background-repeat:repeat;
+    background-size:400px 400px;
+    animation:twinkle 5s ease-in-out infinite alternate;
+    opacity:0.8;
+  }
+  @keyframes twinkle{
+    from{opacity:0.5;}
+    to{opacity:1;}
+  }
+
+  /* ---- MOBILE-FIRST base layout ---- */
+  section{
+    position:relative;
+    padding:3.5rem 1.3rem;
+    z-index:2;
+  }
+  .center{text-align:center; max-width:680px; margin:0 auto;}
+
+  /* ---- Hero ---- */
+  #hero{
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  #hero .eyebrow{color:var(--blue-sky); font-size:1rem; margin-bottom:0.5rem;}
+  #hero h1{font-size:clamp(2rem, 9vw, 3.8rem); line-height:1.12; margin-bottom:1.1rem;}
+  #hero p{font-size:0.98rem; opacity:0.85; max-width:520px; margin:0 auto 2rem;}
+  .choices{display:flex; flex-direction:column; gap:0.8rem; justify-content:center; position:relative; width:100%; max-width:320px; margin:0 auto;}
+  .btn{
+    font-family:'Baloo 2', cursive;
+    font-size:1rem;
+    padding:0.95rem 1.6rem;
+    border-radius:999px;
+    border:none;
+    cursor:pointer;
+    width:100%;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn-yes{
+    background:linear-gradient(135deg, var(--blue-sky), var(--blue-royal));
+    color:#fff;
+    box-shadow:0 10px 24px -8px rgba(41,82,217,0.6);
+  }
+  .btn-yes:active{transform:translateY(1px);}
+  .btn-no{
+    background:#d8e3f5;
+    color:#7789ab;
+    position:relative;
+  }
+  .hint{margin-top:1.3rem; font-size:0.8rem; opacity:0.55; font-style:italic;}
+
+  /* ---- generic section heading ---- */
+  .kicker{display:flex; align-items:center; gap:0.6rem; margin-bottom:1.8rem;}
+  .kicker .bar{width:5px; height:26px; background:var(--blue-sky); border-radius:3px; flex-shrink:0;}
+  .kicker h2{font-size:1.5rem;}
+
+  /* ---- thanks ---- */
+  #thanks{
+    display:none;
+    text-align:center;
+    padding-top:6rem;
+  }
+  #thanks .icon{font-size:2.2rem; margin-bottom:1rem;}
+  #thanks p{max-width:540px; margin:0 auto; opacity:0.8; line-height:1.6; font-size:0.95rem;}
+
+  /* ---- clarifying table -> stacked cards on mobile ---- */
+  .clarify-list{display:flex; flex-direction:column; gap:0.9rem; margin-top:1rem;}
+  .clarify-row{
+    background:#fff; border-radius:14px; padding:1rem 1.1rem;
+    box-shadow:0 8px 20px -14px rgba(20,40,100,0.3);
+  }
+  .clarify-row .wrong{
+    font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em;
+    font-family:'JetBrains Mono', monospace; color:#c15b6b; margin-bottom:0.5rem;
+  }
+  .clarify-row .right{color:#1f7a52; font-weight:600; font-size:0.95rem; line-height:1.5;}
+
+  /* ---- fandom cards (mobile: stacked, image on top) ---- */
+  .fandom{
+    display:flex;
+    flex-direction:column;
+    gap:1.6rem;
+  }
+  .fandom-visual{
+    width:100%;
+    aspect-ratio:4/3;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:3.6rem;
+    position:relative;
+    overflow:hidden;
+  }
+  .fandom-visual span{position:relative; z-index:2;}
+  .fandom-visual img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    position:relative; z-index:1;
+  }
+  .v-miraculous{background:radial-gradient(circle at 30% 30%, #2b3a80, #0a1440 75%);}
+  .v-miraculous::after{
+    content:"";
+    position:absolute; inset:0;
+    background:radial-gradient(circle, transparent 60%, rgba(255,255,255,0.06) 62%, transparent 64%);
+    background-size:40px 40px;
+  }
+  .v-snoopy{background:linear-gradient(135deg, #6fa8f5, #2952d9);}
+  .v-twd{background:linear-gradient(135deg, #3a3225, #171310); }
+  .v-twd span{filter:drop-shadow(0 0 12px rgba(255,196,120,0.5));}
+  .v-peep{background:radial-gradient(circle at 70% 20%, #2a2560, #0a1440 75%); }
+  .v-peep::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20% 30%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 70% 60%, #fff, transparent),
+      radial-gradient(1px 1px at 40% 80%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 85% 15%, #fff, transparent);
+    background-repeat:repeat; background-size:200px 200px;
+  }
+
+  .fandom-text .label{margin-bottom:0.5rem; display:inline-block;}
+  .fandom-text h2{font-size:1.35rem; margin-bottom:0.7rem;}
+  .fandom-text p{margin-bottom:0.8rem; line-height:1.6; opacity:0.85; font-size:0.95rem;}
+
+  /* ---- metric ---- */
+  .metric-wrap{display:flex; flex-direction:column; gap:1.6rem;}
+  .metric-num{font-family:'Baloo 2',cursive; font-size:clamp(3rem,18vw,6rem); color:var(--navy); line-height:1;}
+  .metric-sub{font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--blue-royal); margin-top:0.5rem;}
+  .metric-card{background:var(--blue-pale); padding:1.5rem; border-radius:16px;}
+  .metric-card p{font-size:0.92rem;}
+
+  /* ---- unique cards ---- */
+  .cards3{display:grid; grid-template-columns:1fr; gap:1.1rem;}
+  .card{
+    background:#fff; border-radius:16px; padding:1.5rem;
+    border-bottom:4px solid var(--blue-sky);
+    box-shadow:0 12px 30px -18px rgba(20,40,100,0.25);
+  }
+  .card:nth-child(2){border-bottom-color:var(--navy);}
+  .card .ic{font-size:1.4rem; margin-bottom:0.6rem;}
+  .card h3{font-size:1rem; margin-bottom:0.5rem;}
+  .card p{font-size:0.9rem; opacity:0.75; line-height:1.5;}
+
+  /* ---- sky quote ---- */
+  #sky{
+    text-align:center;
+  }
+  #sky .quote-box{
+    max-width:600px; margin:0 auto;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.15);
+    backdrop-filter:blur(6px);
+    padding:2rem 1.4rem;
+    border-radius:18px;
+  }
+  #sky .quote-box .label{color:var(--gold);}
+  #sky .quote-box p{margin-top:1rem; line-height:1.65; opacity:0.9; font-size:0.95rem;}
+  .shoot{
+    position:absolute;
+    width:2px; height:2px;
+    background:#fff;
+    border-radius:50%;
+    box-shadow:0 0 0 1px rgba(255,255,255,0.1);
+  }
+
+  /* ---- timeline: vertical on mobile ---- */
+  .timeline{
+    display:flex;
+    flex-direction:column;
+    gap:1.8rem;
+    margin-top:2.5rem;
+    border-left:2px solid var(--blue-sky);
+    margin-left:8px;
+    padding-left:1.4rem;
+  }
+  .tl-item{position:relative; text-align:left;}
+  .tl-dot{
+    position:absolute; left:calc(-1.4rem - 9px); top:2px;
+    width:16px; height:16px; border-radius:50%;
+    background:var(--navy); border:3px solid var(--blue-mist);
+  }
+  .tl-item h4{font-family:'Baloo 2',cursive; margin-bottom:0.4rem; font-size:1.05rem;}
+  .tl-item p{font-size:0.88rem; opacity:0.75; max-width:none;}
+
+  /* ---- closing ---- */
+  #closing{
+    text-align:center;
+    padding-bottom:5rem;
+  }
+  #closing h1{font-size:clamp(2rem,10vw,4rem);}
+  #closing .heart{font-size:1.8rem; margin:1.3rem 0;}
+  #closing p{font-size:0.95rem;}
+  #closing .fine{opacity:0.5; font-style:italic; font-size:0.85rem;}
+
+  footer{
+    text-align:center; padding:2rem; font-size:0.72rem; opacity:0.4;
+  }
+
+  .fade-up{opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease;}
+  .fade-up.show{opacity:1; transform:translateY(0);}
+
+  /* ============ DESKTOP ENHANCEMENTS (min-width) ============ */
+  @media (min-width:768px){
+    section{padding:7rem 6vw;}
+
+    #hero h1{margin-bottom:1.2rem;}
+    #hero p{font-size:1.05rem; margin-bottom:2.2rem;}
+    .choices{flex-direction:row; gap:1rem; max-width:none;}
+    .btn{width:auto; font-size:1.05rem; padding:0.85rem 2.2rem;}
+    .btn-yes:hover{transform:translateY(-2px);}
+    .hint{margin-top:1.4rem;}
+
+    .kicker{gap:0.7rem; margin-bottom:2.2rem;}
+    .kicker .bar{height:30px;}
+    .kicker h2{font-size:1.9rem;}
+
+    #thanks{padding-top:9rem;}
+    #thanks .icon{font-size:2.4rem;}
+    #thanks p{font-size:1rem;}
+
+    /* clarifying table becomes a real table again */
+    .clarify-list{display:block;}
+    table{width:100%; border-collapse:collapse; margin-top:1rem;}
+    th{
+      text-align:left; padding:0.9rem 1rem;
+      background:var(--blue-pale);
+      font-family:'JetBrains Mono', monospace;
+      font-size:0.78rem; text-transform:uppercase; letter-spacing:0.05em;
+      color:var(--navy);
+    }
+    th:first-child{border-radius:12px 0 0 12px;}
+    th:last-child{border-radius:0 12px 12px 0;}
+    td{padding:1rem; border-bottom:1px solid #e3ecfa; font-size:0.98rem;}
+    td.wrong{color:#c15b6b;}
+    td.right{color:#1f7a52; font-weight:600;}
+
+    .fandom{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:3rem;
+      align-items:center;
+    }
+    .fandom.reverse{direction:rtl;}
+    .fandom.reverse > *{direction:ltr;}
+    .fandom-visual{font-size:5rem;}
+    .fandom-text h2{font-size:1.7rem; margin-bottom:0.9rem;}
+    .fandom-text p{font-size:1rem;}
+
+    .metric-wrap{display:grid; grid-template-columns:1fr 1.2fr; gap:3rem;}
+    .metric-num{font-size:clamp(3.5rem,10vw,6rem);}
+    .metric-card{padding:2rem;}
+    .metric-card p{font-size:1rem;}
+
+    .cards3{grid-template-columns:repeat(3,1fr); gap:1.5rem;}
+    .card{padding:1.8rem;}
+
+    #sky .quote-box{padding:2.4rem 2rem;}
+
+    .timeline{
+      flex-direction:row; justify-content:space-between;
+      border-left:none; margin-left:0; padding-left:0;
+      position:relative;
+    }
+    .timeline::before{
+      content:""; position:absolute; top:9px; left:0; right:0; height:2px;
+      background:var(--blue-sky);
+    }
+    .tl-item{flex:1; text-align:center;}
+    .tl-dot{position:static; margin:0 auto 0.8rem;}
+    .tl-item p{max-width:200px; margin:0 auto;}
+
+    #closing{padding-bottom:10rem;}
+    #closing .heart{font-size:2rem;}
+  }
+
+  /* respect reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .stars{animation:none;}
+    .fade-up{transition:none; opacity:1; transform:none;}
+    #moon{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<div id="moon-track"><div id="moon"></div></div>
+
+<!-- HERO -->
+<section id="hero" class="night">
+  <div class="stars"></div>
+  <div style="position:relative; z-index:2;">
+    <div class="eyebrow label">oi, meu amor</div>
+    <h1>Será que você<br>me perdoa?</h1>
+    <p>Poxa, hoje eu falei besteira. Saiu tudo errado e pareceu que eu tava te chamando de mentirosa — e definitivamente não é isso que eu penso de você. Você é a última pessoa nesse mundo que eu duvidaria.</p>
+    <div class="choices">
+      <button class="btn btn-yes" onclick="sayYes()">Sim, eu te perdoo</button>
+      <button class="btn btn-no" id="noBtn">Preciso pensar</button>
+    </div>
+    <div class="hint">(role para baixo devagar — ou clique em "sim")</div>
+  </div>
+</section>
+
+<!-- THANKS -->
+<section id="thanks">
+  <div class="icon">💙</div>
+  <h2>Obrigado por me dar essa chance</h2>
+  <p>Que bom que você continuou aqui. Montei essa página com tudo que você curte, só pra te mostrar o quanto você importa pra mim — e o quanto eu me sinto mal por ter te feito passar por isso hoje.</p>
+</section>
+
+<!-- CLARIFYING -->
+<section id="clarify">
+  <div class="kicker"><div class="bar"></div><h2>Deixa eu explicar direito</h2></div>
+
+  <!-- mobile: stacked cards -->
+  <div class="clarify-list">
+    <div class="clarify-row"><div class="wrong">saiu assim: "parecia que você tava mentindo"</div><div class="right">eu quis dizer: fiquei confuso com a situação e me expressei muito mal</div></div>
+    <div class="clarify-row"><div class="wrong">saiu assim: tom de desconfiança</div><div class="right">eu quis dizer: eu confio em você — você é meu porto seguro</div></div>
+  </div>
+
+  <!-- desktop: real table (JS toggles which one shows) -->
+  <table style="display:none;">
+    <tr><th>O que saiu (do jeito errado)</th><th>O que eu realmente quis dizer</th></tr>
+    <tr><td class="wrong">"Parecia que você tava mentindo"</td><td class="right">"Eu fiquei confuso com a situação e me expressei muito mal."</td></tr>
+    <tr><td class="wrong">Tom de desconfiança</td><td class="right">"Eu confio em você — você é meu porto seguro."</td></tr>
+    <tr><td class="wrong">Voz alterada</td><td class="right">"Eu reagi mal porque tenho medo de te magoar ou te perder, não porque duvido de você."</td></tr>
+  </table>
+</section>
+
+<!-- MIRACULOUS -->
+<section id="miraculous">
+  <div class="fandom">
+    <!-- troque o <span> abaixo por <img src="sua-foto.jpg" alt="a gente de ladybug e cat noir"> quando tiver a foto -->
+    <div class="fandom-visual v-miraculous"><img src="images/myraculous.jpg" alt=""></div>
+    <div class="fandom-text">
+      <span class="label">🐞 nosso miraculous</span>
+      <h2>Lucky Charm</h2>
+      <p>Às vezes eu viro tipo um akumatizado e falo merda sem pensar direito. Mas o coração continua sendo todo seu. A Ladybug e o Cat Noir são a melhor dupla que existe, e a gente também é assim — mesmo quando aparece um vilão bobo (no caso, minha boca sem filtro) tentando estragar tudo.</p>
+      <p>Vou usar meu talismã com mais cuidado daqui pra frente, prometo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SNOOPY -->
+<section id="snoopy" style="background:var(--blue-pale);">
+  <div class="fandom">
+    <!-- troque o <span> abaixo por <img src="sua-foto.jpg" alt="momento fofo tipo snoopy"> quando tiver a foto -->
+    <div class="fandom-visual v-snoopy"><img src="images/snoopy.jpg" alt=""></div>
+    <div class="fandom-text">
+      <span class="label">a lealdade do snoopy</span>
+      <h2>"A vida é melhor com um amigo do lado"</h2>
+      <p>O Snoopy não liga pras trapalhadas do Charlie Brown, ele continua ali do lado dele. É isso que eu quero ser pra você: alguém que apoia, que faz rir, que não larga sua mão nem quando erra feio.</p>
+      <p>Amar é dividir sofá, pipoca e a vida inteira — e hoje eu fui um Charlie Brown emburrado. Desculpa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TWD -->
+<section id="twd">
+  <div class="fandom">
+    <!-- troque o <span> abaixo por <img src="sua-foto.jpg" alt="a gente estilo the walking dead"> quando tiver a foto -->
+    <div class="fandom-visual v-twd"><img src="images/rick.jpg" alt=""></div>
+    <div class="fandom-text">
+      <span class="label">estilo rick &amp; michonne</span>
+      <h2>Meu porto seguro</h2>
+      <p>Em qualquer apocalipse, confusão ou zona que a vida vire, é você que eu quero no meu grupo. Você não é estranha pra mim, é família.</p>
+      <p>As pessoas que a gente ama são o que nos fazem quem a gente é. Você me faz melhor todos os dias, e eu enfrento mil walkers se for preciso, só pra te ver bem de novo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LIL PEEP -->
+<section id="peep" style="background:var(--blue-pale);">
+  <div class="fandom">
+    <!-- troque o <span> abaixo por <img src="sua-foto.jpg" alt="a gente ouvindo música"> quando tiver a foto -->
+    <div class="fandom-visual v-peep"><img src="images/lilpeep.jpg" alt=""></div>
+    <div class="fandom-text">
+      <span class="label">pensando em você</span>
+      <h2>Lil Peep</h2>
+     <p>Sabe a do Lil Peep que fala do céu cheio de estrela, que cada uma tem um motivo pra brilhar? Ela fica passando na minha cabeça toda hora que eu penso na gente.</p>
+      <p>"Look at the sky tonight, all of the stars have a reason..." E o meu maior motivo pra tudo é você.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SKY (Lil Peep inspired, sem citar letra) -->
+<section id="sky" class="night">
+  <div class="stars"></div>
+  <div class="shoot" style="top:20%; left:15%;"></div>
+  <div class="shoot" style="top:60%; left:75%;"></div>
+  <div style="position:relative; z-index:2;">
+    <div class="quote-box">
+      <div class="label">olha o céu hoje à noite</div>
+      <p>Quando as coisas desandam e eu me sinto quebrado, é a sua voz e o seu jeito de amar que me trazem de volta pro chão. Você é muito mais que perfeita pra mim, mesmo nos dias em que eu não mereço.</p>
+    </div>
+  </div>
+</section>
+
+<!-- METRIC -->
+<section id="metric">
+  <div class="metric-wrap">
+    <div>
+      <div class="metric-num">100%</div>
+      <div class="metric-sub">comprometido em te fazer feliz</div>
+    </div>
+    <div class="metric-card">
+      <strong>Por que esse número?</strong>
+      <p style="margin-top:0.6rem; opacity:0.8; line-height:1.6;">Não tem espaço pra dúvida aqui. Meu amor por você é inteiro, e depois de hoje meu único objetivo é fazer você se sentir a mulher mais amada e mais segura do mundo do meu lado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- UNIQUE -->
+<section id="unique" style="background:var(--blue-pale);">
+  <div class="kicker"><div class="bar"></div><h2>Por que você é única</h2></div>
+  <div class="cards3">
+    <div class="card"><div class="ic">⭐</div><h3>Sua honestidade</h3><p>É o que eu mais admiro em você. Você é a pessoa mais verdadeira que eu já conheci na vida — e foi exatamente isso que eu esqueci de respeitar hoje.</p></div>
+    <div class="card"><div class="ic">🐞</div><h3>Seu brilho</h3><p>Você ilumina tudo ao seu redor, tipo uma heroína salvando o dia de um clima cinzento.</p></div>
+    <div class="card"><div class="ic">🛡️</div><h3>Sua força</h3><p>Você aguenta qualquer apocalipse, mas continua com o coração mais doce que eu já vi.</p></div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="future">
+  <div class="kicker"><div class="bar"></div><h2>Nosso futuro</h2></div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div><h4>Hoje</h4><p>Nosso recomeço, com muito mais diálogo e cuidado com as palavras.</p></div>
+    <div class="tl-item"><div class="tl-dot"></div><h4>Amanhã</h4><p>Mais risadas e momentos bobos, tipo Snoopy &amp; Woodstock.</p></div>
+    <div class="tl-item"><div class="tl-dot"></div><h4>Sempre</h4><p>Enfrentando qualquer desafio juntos, lado a lado.</p></div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <h1>Eu te amo</h1>
+  <div class="heart">💙</div>
+  <p style="max-width:480px; margin:0 auto; opacity:0.8;">Pra sempre, do seu lado. Não sei fazer desculpa perfeita, só sei que quero você comigo — e vou prestar mais atenção nas palavras, pra nunca mais te fazer sentir do jeito que você sentiu hoje.</p>
+  <p class="fine" style="margin-top:2rem;">feito com carinho (e um pouco de arrependimento) só pra você</p>
+</section>
+
+<footer>este site é só nosso 💙 feito por Julio.</footer>
+
+<script>
+  // moon travels down a gentle arc as the user scrolls the whole page
+  const moon = document.getElementById('moon');
+  function updateMoon(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = Math.min(scrollTop / docHeight, 1);
+    const x = 10 + progress * 78; // vw
+    const arc = Math.sin(progress * Math.PI) * 40;
+    moon.style.left = x + 'vw';
+    moon.style.top = (10 - arc*0.15) + 'vh';
+    moon.style.opacity = 0.15 + progress*0.1 + 0.6;
+  }
+  window.addEventListener('scroll', updateMoon);
+  updateMoon();
+
+  // dodging "no" button (only on devices with a real mouse hover)
+  const noBtn = document.getElementById('noBtn');
+  let dodges = 0;
+  const hasHover = window.matchMedia('(hover: hover)').matches;
+  if(hasHover){
+    noBtn.addEventListener('mouseenter', () => {
+      if(dodges < 6){
+        const x = (Math.random()-0.5) * 140;
+        const y = (Math.random()-0.5) * 30;
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+        dodges++;
+      } else {
+        noBtn.textContent = "tá bom, tá bom 🥺";
+      }
+    });
+  } else {
+    // on mobile (touch), dodge on tap instead of hover
+    noBtn.addEventListener('click', (e) => {
+      if(dodges < 6){
+        e.preventDefault();
+        const x = (Math.random()-0.5) * 120;
+        const y = (Math.random()-0.5) * 40;
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+        dodges++;
+      } else {
+        noBtn.textContent = "tá bom, tá bom 🥺";
+      }
+    });
+  }
+
+  function sayYes(){
+    document.getElementById('thanks').style.display = 'block';
+    document.getElementById('thanks').scrollIntoView({behavior:'smooth'});
+  }
+
+  // fade-up reveal
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
+  }, {threshold:0.15});
+  document.querySelectorAll('section > *').forEach(el=>{
+    el.classList.add('fade-up');
+    observer.observe(el);
+  });
+
+  // swap clarify table for mobile-list depending on width, and vice versa
+  function toggleClarifyView(){
+    const isDesktop = window.innerWidth >= 768;
+    document.querySelector('.clarify-list').style.display = isDesktop ? 'none' : 'flex';
+    document.querySelector('#clarify table').style.display = isDesktop ? 'table' : 'none';
+  }
+  window.addEventListener('resize', toggleClarifyView);
+  toggleClarifyView();
+</script>
+
+</body>
+</html>
